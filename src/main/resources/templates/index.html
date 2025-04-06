@@ -1,0 +1,56 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>TaskForge – Uppgiftshanterare</title>
+    <link rel="stylesheet" th:href="@{/style.css}">
+</head>
+<body>
+
+<header>
+    <div class="topbar">
+        <div class="logo">🛠️ TaskForge</div>
+        <div class="subtitle">Företagsanpassad Uppgiftshanterare</div>
+    </div>
+</header>
+
+<main>
+    <section class="stats">
+        <div class="card">
+            <div>Totalt antal uppgifter:</div>
+            <div th:text="${todos.size()}">0</div>
+        </div>
+        <div class="card">
+            <div>Klara uppgifter:</div>
+            <div th:text="${completedCount}">0</div>
+        </div>
+    </section>
+
+    <section class="task-entry">
+        <h2>Skapa ny uppgift</h2>
+        <form th:action="@{/add}" method="post">
+            <input type="text" name="task" placeholder="Beskriv uppgiften" required>
+            <button type="submit">Lägg till</button>
+        </form>
+    </section>
+
+    <section class="task-list">
+        <h2>Aktuella uppgifter</h2>
+        <ul>
+            <li th:each="todo : ${todos}">
+                <span th:text="${todo.task}" th:classappend="${todo.done} ? 'done' : ''"></span>
+
+                <form th:action="@{/toggle/{id}(id=${todo.id})}" method="post">
+                    <button type="submit" th:text="${todo.done} ? 'Ångra' : 'Klar'"></button>
+                </form>
+
+                <form th:action="@{/delete/{id}(id=${todo.id})}" method="post">
+                    <button type="submit">Ta bort</button>
+                </form>
+            </li>
+        </ul>
+    </section>
+</main>
+
+</body>
+</html>
